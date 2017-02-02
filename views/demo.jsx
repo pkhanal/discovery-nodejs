@@ -10,52 +10,6 @@ import SentimentAnalysis from './SentimentAnalysis/index.jsx';
 import MentionsAndSentiments from './MentionsAndSentiments/index.jsx';
 import NoResults from './NoResults/index.jsx';
 
-const parseQueryResults = (data) => {
-  const parsedData = {
-    results: data.results, // Top Results
-    entities: {}, // Topic cloud
-    sentiments: null, // Sentiment by source
-    sentiment: null, // Overall sentiment
-    mentions: null, // Mentions and Sentiments
-  };
-
-  data.aggregations.forEach((aggregation) => {
-    // sentiments by source
-    if (aggregation.type === 'term' && aggregation.field.startsWith('blekko.basedomain')) {
-      parsedData.sentiments = aggregation;
-    }
-    // Overall sentiment
-    if (aggregation.type === 'term' && aggregation.field.startsWith('docSentiment')) {
-      parsedData.sentiment = aggregation;
-    }
-
-    if (aggregation.type === 'term' && aggregation.field === 'enrichedTitle.concepts.text') {
-      parsedData.entities.topics = aggregation.results;
-    }
-
-    // Mentions and sentiments
-    if (aggregation.type === 'filter' &&
-      'aggregations' in aggregation &&
-      aggregation.aggregations[0].field === 'enrichedTitle.entities.text') {
-      parsedData.mentions = aggregation;
-    }
-
-    if (jpath.jpath('/type', aggregation, 'not found') === 'nested') {
-      if (aggregation.path === 'enrichedTitle.entities') {
-        const entities = aggregation.aggregations;
-        if (jpath.jpath('/0/match', entities, 'not found') === 'Person') {
-          parsedData.entities.people = jpath.jpath('/0/aggregations/0/results', entities);
-        }
-        if (jpath.jpath('/0/match', entities, 'not found') === 'Company') {
-          parsedData.entities.companies = jpath.jpath('/0/aggregations/0/results', entities);
-        }
-      }
-    }
-  });
-
-  return parsedData;
-};
-
 export default React.createClass({
   displayName: 'Demo',
 
@@ -76,7 +30,8 @@ export default React.createClass({
    */
   fetchNewData(query) {
     this.setState({ query, loading: true });
-    fetch('/api/query', {
+    /* query */
+    /*fetch('/api/query', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(query),
@@ -85,7 +40,7 @@ export default React.createClass({
       if (response.ok) {
         response.json()
           .then((json) => {
-            this.setState({ loading: false, data: parseQueryResults(json) });
+            this.setState({ loading: false, data: json.results });
           });
       } else {
         response.json()
@@ -98,7 +53,7 @@ export default React.createClass({
           });
         });
       }
-    });
+    });*/
     // scroll to the loading bar
     window.scrollTo(100, 344);
   },
@@ -114,46 +69,18 @@ export default React.createClass({
                 <Icon type="loader" size="large" />
               </div>
             </div>) : null }
-        { !this.state.loading && this.state.data && this.state.data.results.length > 0 ? (
+        { !this.state.loading && this.state.data && this.state.data.length > 0 ? (
           <div className="results">
             <div className="_container _container_large">
               <div className="row">
                 <div className="results--panel-1">
-                  <TopEntities
-                    query={this.state.query}
-                    entities={this.state.data.entities}
-                    onShowCode={this.toggleTopEntities}
-                  />
-                </div>
-                <div className="results--panel-2">
-                  <TopStories
-                    query={this.state.query}
-                    stories={this.state.data.results}
-                    onShowCode={this.toggleTopResults}
-                  />
-                </div>
-              </div>
-              <div className="row">
-                <div className="results--panel-3">
-                  <SentimentAnalysis
-                    query={this.state.query}
-                    sentiment={this.state.data.sentiment}
-                    sentiments={this.state.data.sentiments}
-                  />
-                </div>
-              </div>
-              <div className="row">
-                <div className="results--panel-4">
-                  <MentionsAndSentiments
-                    query={this.state.query}
-                    mentions={this.state.data.mentions}
-                  />
+                  <div>Add view to show result</div>
                 </div>
               </div>
             </div>
           </div>
         ) : null }
-        { !this.state.loading && this.state.data && this.state.data.results.length === 0 ?
+        { !this.state.loading && this.state.data && this.state.data.length === 0 ?
           <NoResults query={this.state.query} />
         : null }
       </div>

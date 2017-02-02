@@ -8,61 +8,19 @@ export default React.createClass({
   propTypes: {
     onQueryChange: React.PropTypes.func.isRequired,
     query: React.PropTypes.shape({
-      text: React.PropTypes.string,
-      date: React.PropTypes.shape({
-        from: React.PropTypes.string,
-        to: React.PropTypes.string,
-      }),
+      text: React.PropTypes.string
     }).isRequired,
   },
 
   getInitialState() {
     return {
       focusedInput: null,
-      startDate: moment(this.props.query.date.from),
-      endDate: moment(this.props.query.date.to),
-      query: this.props.query,
-      dateButtons: [{ value: 'lastweek',
-        id: 'rb-1',  // id's must be unique across the entire page. Default value is name-value
-        text: 'Last Week',
-        startDate: moment().subtract(1,'w'),
-        endDate: moment()
-      }, {
-        value: 'lasttwoweeks',
-        id: 'rb-2',
-        text: 'Last 2 Weeks',
-        startDate: moment().subtract(2,'w'),
-        endDate: moment()
-      }, {
-        value: 'lastmonth',
-        id: 'rb-3',
-        text: 'Last Month',
-        startDate: moment().subtract(30,'d'),
-        endDate: moment()
-      }, {
-        value: 'lasttwomonths',
-        id: 'rb-4',
-        text: 'Last 2 Months',
-        selected: true,
-        startDate: moment().subtract(60,'d'),
-        endDate: moment()
-      }],
+      query: this.props.query
     };
   },
 
   onFocusChange(focusedInput) {
     this.setState({ focusedInput });
-  },
-
-  onDatesChange({ startDate, endDate }) {
-    this.setState({ startDate, endDate });
-    this.props.onQueryChange({
-      text: this.state.query.text,
-      date: {
-        from: this.state.startDate.format('YYYYMMDD'),
-        to: this.state.endDate.format('YYYYMMDD'),
-      },
-    });
   },
 
   componentWillUnMount() {
@@ -81,36 +39,16 @@ export default React.createClass({
   handleKeyPress(event) {
     if (event.key === 'Enter' && event.target.value.match(/[^\s]+/)) {
       this.props.onQueryChange({
-        text: this.state.query.text,
-        date: {
-          from: this.state.startDate.format('YYYYMMDD'),
-          to: this.state.endDate.format('YYYYMMDD'),
-        },
+        text: this.state.query.text
       });
     }
   },
   handleSearchClick() {
     if (this.state.query && this.state.query.text.match(/[^\s]+/)) {
       this.props.onQueryChange({
-        text: this.state.query.text,
-        date: {
-          from: this.state.startDate.format('YYYYMMDD'),
-          to: this.state.endDate.format('YYYYMMDD'),
-        },
+        text: this.state.query.text
       });
     }
-  },
-  dateButtonChanged(e) {
-    var newDates = {};
-    let newButtonState = this.state.dateButtons.map((item) => {
-      item.selected = item.value == e.target.value ? true : false;
-      if (item.selected) {
-        newDates = {startDate: item.startDate, endDate: item.endDate};
-      }
-      return item;
-    });
-    this.setState({dateButtons: newButtonState});
-    this.onDatesChange(newDates);
   },
   render() {
     return (
@@ -123,20 +61,12 @@ export default React.createClass({
                   onInput={this.handleInputChange}
                   onKeyPress={this.handleKeyPress}
                   defaultValue={this.state.query.text || ''}
-                  placeholder="What company are you interested in?"
+                  placeholder="Query"
                   />
                 <div onClick={this.handleSearchClick} className="query--icon-container">
                   <Icon type="search" size="regular" fill="#ffffff" />
                 </div>
               </div>
-            </div>
-            <div className="query--date-buttons-container">
-              <ButtonsGroup
-                type="radio"  // radio, button, or checkbox
-                name="radio-buttons"
-                onChange={this.dateButtonChanged}
-                buttons={this.state.dateButtons}
-                  />
             </div>
           </div>
         </div>

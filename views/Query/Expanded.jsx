@@ -20,11 +20,7 @@ export default React.createClass({
    */
   handleInputChange(event) {
     this.setState({ query: {
-      text: event.target.value,
-      date: {
-        from: moment().subtract(2, 'months').format('YYYYMMDD'), // The index has 60 days worth
-        to: moment().format('YYYYMMDD'),
-      },
+      text: event.target.value
     } });
   },
   /**
@@ -48,7 +44,6 @@ export default React.createClass({
           <div className="query--left">
             <div className="query--search-container">
               <TextInput
-                placeholder="What company are you interested in?"
                 onKeyPress={this.handleKeyPress}
                 onInput={this.handleInputChange}
                 defaultValue={this.state.query ? this.state.query.text : null}
@@ -57,15 +52,6 @@ export default React.createClass({
                 <Icon type="search" size="regular" fill="#ffffff" />
               </div>
             </div>
-          </div>
-          <div className="query--right">
-            <p className="base--p query--query-description">This interactive demo shows how to query news content to</p>
-            <ul className="base--ul query--query-list">
-              <li className="base--li query--query-list-item">Find top entities (people, topics, companies)</li>
-              <li className="base--li query--query-list-item">Extract sentiment over time</li>
-              <li className="base--li query--query-list-item">Sentiment Analysis</li>
-              <li className="base--li query--query-list-item">Analyze most frequently co-mentioned entities</li>
-            </ul>
           </div>
         </div>
       </section>

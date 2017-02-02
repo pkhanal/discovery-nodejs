@@ -19,20 +19,10 @@ const app = express();
 
 const queryBuilder = require('./query-builder');
 
-const DiscoveryV1 = require('watson-developer-cloud/discovery/v1');
-const discovery = new DiscoveryV1({
-  // If unspecified here, the DISCOVERY_USERNAME and
-  // DISCOVERY_PASSWORD env properties will be checked
-  // After that, the SDK will fall back to the bluemix-provided VCAP_SERVICES environment property
-  // username: '<username>',
-  // password: '<password>',
-  version_date: '2016-11-09',
-  path: {
-    environment_id: process.env.ENVIRONMENT_ID || '<environment-id>',
-    collection_id: process.env.COLLECTION_ID || '<collection-id>',
-  },
-  qs: { aggregation: `[${queryBuilder.aggregations.join(',')}]` },
-});
+/*
+import watson-developer-cloud/discovery/v1
+instantiate discovery
+*/
 
 
 // Bootstrap application settings
@@ -43,14 +33,10 @@ app.get('/', (req, res) => {
 });
 
 app.post('/api/query', (req, res, next) => {
-  const params = queryBuilder.build(req.body);
-  discovery.query(params, (error, response) => {
-    if (error) {
-      next(error);
-    } else {
-      res.json(response);
-    }
-  });
+  console.log(req.body);
+  /*
+    Query using discovery api
+  */
 });
 
 // error-handler settings

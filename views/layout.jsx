@@ -19,26 +19,8 @@ function Layout(props) {
         <link rel="stylesheet" href="/css/style.css" />
       </head>
       <body>
-        <Header
-          mainBreadcrumbs="Discovery"
-          mainBreadcrumbsUrl="http://www.ibm.com/watson/developercloud/discovery.html"
-          subBreadcrumbs="Discovery Demo"
-          subBreadcrumbsUrl="https://discovery-news-demo.mybluemix.net"
-        />
-        <Jumbotron
-          serviceName="Discovery"
-          repository="https://github.com/watson-developer-cloud/discovery-nodejs"
-          documentation="http://www.ibm.com/watson/developercloud/doc/discovery"
-          apiReference="http://www.ibm.com/watson/developercloud/discovery/api"
-          startInBluemix="https://console.ng.bluemix.net/registration/?target=/catalog/services/discovery/"
-          version="GA"
-          description={DESCRIPTION}
-        />
         <div id="root">
           {props.children}
-        </div>
-        <div style={{ marginTop: '0rem' }}>
-          <Footer />
         </div>
         <script src="https://cdn.polyfill.io/v2/polyfill.min.js" />
         <script type="text/javascript" src="js/bundle.js" />

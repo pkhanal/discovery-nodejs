@@ -10,8 +10,7 @@ const Query = props => (
 
 Query.propTypes = {
   query: React.PropTypes.shape({
-    text: React.PropTypes.string,
-    date: React.PropTypes.object,
+    text: React.PropTypes.string
   }),
   onQueryChange: React.PropTypes.func.isRequired,
 };
