@@ -1,29 +1,11 @@
 # Discovery Demo
 
 
-Use the IBM Watson [Discovery][service_url] service to add a cognitive search and content analytics engine to your applications to identify patterns, trends and actionable insights that drive better decision-making.
-
-![Demo](readme-images/new-demo.gif)
-
-Demo: https://discovery-news-demo.mybluemix.net/
+Demo: https://discovery-reviews-demo.mybluemix.net/
 
 ## Getting started
 
 1. You need a Bluemix account. If you don't have one, [sign up][sign_up].
-
-1. Download and install the [Cloud-foundry CLI][cloud_foundry] tool if you haven't already.
-
-1. Edit the `manifest.yml` file and change `<application-name>` to something unique. The name you use determines the URL of your application. For example, `<application-name>.mybluemix.net`.
-
-  ```yaml
-  applications:
-  - services:
-    - my-service-instance
-    name: <application-name>
-    command: npm start
-    path: .
-    memory: 512M
-  ```
 
 1. Connect to Bluemix with the command line tool.
 
